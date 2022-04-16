@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="index.css">
+    <title>Addresses</title>
+</head>
+<body>
+    <script src="addresses.js"></script>
+    <script>
+        // function takes in the text you wish to copy to clipboard
+        function copyTextToClipboard(text) {
+            var textArea = document.createElement("textarea");
+            textArea.style.position = 'fixed';
+            textArea.style.top = 0;
+            textArea.style.left = 0;
+            textArea.style.width = '2em';
+            textArea.style.height = '2em';
+            textArea.style.padding = 0;
+            textArea.style.border = 'none';
+            textArea.style.outline = 'none';
+            textArea.style.boxShadow = 'none';
+            textArea.style.background = 'transparent';
+
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+
+            try {
+                var successful = document.execCommand('copy');
+                var msg = successful ? 'successful' : 'unsuccessful';
+                console.log('Copying text "'+text+'" was ' + msg);
+                showSnackbar(text);
+            } catch (err) {
+                console.log('Error occured during copy!');
+            }
+
+            document.body.removeChild(textArea);
+        }
+
+        // Handle Snackbar / Toast on Copy to Clipboard action
+        function showSnackbar(text) {
+            var x = document.getElementById("snackbar");
+            x.innerHTML = "Address "+text+" copied!";
+            x.className = "show";
+            setTimeout(function(){ x.className = x.className.replace("show", ""); }, 1500);
+        }
+
+        // Not recommended function, only for testing
+        function sleep(miliseconds) {
+            var currentTime = new Date().getTime();
+            while (currentTime + miliseconds >= new Date().getTime()) {
+            }
+        }
+
+        // Dynamically create Source Wise Filter elements using values from Array
+        function addSourceFilterOptionsElements(mode){
+            
+            var sourcesSet = new Set();
+            //extracting list of unique sources from addressRows
+            for(var i=0; i<allAddressRows.length; i++){
+                sourcesSet.add(allAddressRows[i].addressSource);
+            }
+            console.log(sourcesSet);
+            var sources = Array.from(sourcesSet);
+
+            //add heading to the section
+            document.getElementById("sourceFilterOptionsContainers").innerHTML = "<h1>Sources</h1> <br/>";
+            //adding Filter Buttons
+            if(mode === "All"){
+                sources.forEach(function addFilterButton(source){
+                    var filterButton = '<button class="button" onclick="addAddressElementsBySource('+source+')">'+source+'</button>';
+                    document.getElementById("sourceFilterOptionsContainers").innerHTML += filterButton;
+                });
+            }
+            else{
+                for(var i=0; i<6; i++){
+                    var filterButton = '<button class="button" onclick="addAddressElementsBySource('+sources[i]+')">'+sources[i]+'</button>';
+                    document.getElementById("sourceFilterOptionsContainers").innerHTML += filterButton;
+                }
+            }
+        }
+
+        // Dynamically create Token Wise Filter option using values from Array
+        function addTokenFilterOptionsElements(mode){
+
+            var tokensSet = new Set();
+            //extracting list of unique tokens from addressRows
+            for(var i=0; i<allAddressRows.length; i++){
+                tokensSet.add(allAddressRows[i].token);
+            }
+            console.log(tokensSet);
+            var tokens = Array.from(tokensSet);
+
+            //add heading to the section
+            document.getElementById("tokenFilterOptionsContainers").innerHTML = "<h1>Tokens</h1> <br/>";
+            //adding Filter Buttons
+            if(mode === "All"){
+                tokens.forEach(function addFilterButton(token){
+                    var filterButton = '<button class="button" onclick="addAddressElementsByToken('+token+')">'+token+'</button>';
+                    document.getElementById("tokenFilterOptionsContainers").innerHTML += filterButton;
+                });
+            }
+            else{
+                for(var i=0; i<6; i++){
+                    var filterButton = '<button class="button" onclick="addAddressElementsByToken('+tokens[i]+')">'+tokens[i]+'</button>';
+                    document.getElementById("tokenFilterOptionsContainers").innerHTML += filterButton;
+                }
+            }            
+        }
+
+        // Dynamically create UI elements based on Source using values from Array
+        function addAddressElementsBySource(source){
+
+            addSourceFilterOptionsElements('Default');
+            addTokenFilterOptionsElements('Default');
+
+            document.getElementById("addressesContainer").style.visibility = "hidden";
+            document.getElementById("loaderContainer").style.display = "block";
+
+            var addressRows = [];
+
+            if(source === 'All'){
+                addressRows = allAddressRows;
+            }
+            else{
+                addressRows = allAddressRows.filter(function (ob){
+                    return ob.addressSource === "'"+source+"'";
+                });
+            }
+
+            document.getElementById("addressesContainer").innerHTML = "<h1>"+source+" Addresses</h1>";
+            //adding UI Elements for address rows
+            for(var i=0; i<addressRows.length; i++){
+
+                var addressElement = '<input type="text" class="address" disabled value='+addressRows[i].address+'>';
+                var addressSourceElement = '<input type="text" class="addressSource" disabled value='+addressRows[i].addressSource+'>';
+                var addressNameElement = '<input type="text" class="addressName" disabled value='+addressRows[i].addressName+'>';
+                var buttonElement = '<button class="button" onclick="copyTextToClipboard('+addressRows[i].address+')">Copy</button><br /><br />';
+
+                document.getElementById("addressesContainer").innerHTML += addressElement;
+                document.getElementById("addressesContainer").innerHTML += addressSourceElement;
+                document.getElementById("addressesContainer").innerHTML += addressNameElement;
+                document.getElementById("addressesContainer").innerHTML += buttonElement;
+            }
+
+            document.getElementById("loaderContainer").style.display = "none";
+            document.getElementById("addressesContainer").style.visibility = "visible";
+        }
+
+        // Dynamically create UI elements based on Token using values from Array
+        function addAddressElementsByToken(token){
+
+            addSourceFilterOptionsElements('Default');
+            addTokenFilterOptionsElements('Default');
+
+            document.getElementById("addressesContainer").style.visibility = "hidden";
+            document.getElementById("loaderContainer").style.display = "block";
+
+            var addressRows = [];
+
+            if(token === 'All'){
+                addressRows = allAddressRows;
+            }
+            else{
+                addressRows = allAddressRows.filter(function (ob){
+                    return ob.token === "'"+token+"'";
+                });
+            }
+
+            document.getElementById("addressesContainer").innerHTML = "<h1>"+token+" Addresses</h1>";
+            //adding UI Elements for address rows
+            for(var i=0; i<addressRows.length; i++){
+
+                var addressElement = '<input type="text" class="address" disabled value='+addressRows[i].address+'>';
+                var addressSourceElement = '<input type="text" class="addressSource" disabled value='+addressRows[i].addressSource+'>';
+                var addressNameElement = '<input type="text" class="addressName" disabled value='+addressRows[i].addressName+'>';
+                var buttonElement = '<button class="button" onclick="copyTextToClipboard('+addressRows[i].address+')">Copy</button><br /><br />';
+
+                document.getElementById("addressesContainer").innerHTML += addressElement;
+                document.getElementById("addressesContainer").innerHTML += addressSourceElement;
+                document.getElementById("addressesContainer").innerHTML += addressNameElement;
+                document.getElementById("addressesContainer").innerHTML += buttonElement;
+            }
+
+            document.getElementById("loaderContainer").style.display = "none";
+            document.getElementById("addressesContainer").style.visibility = "visible";
+        }
+
+        if (document.readyState == 'complete') {
+            addSourceFilterOptionsElements('Default');
+            addTokenFilterOptionsElements('Default');
+            addAddressElementsBySource('All');
+            document.getElementById("clearFilterButtonContainer").style.visibility = "visible";
+        }
+        else {
+            document.onreadystatechange = function () {
+                if (document.readyState === "complete") {
+                    addSourceFilterOptionsElements('Default');
+                    addTokenFilterOptionsElements('Default');
+                    addAddressElementsBySource('All');
+                    document.getElementById("clearFilterButtonContainer").style.visibility = "visible";
+                }
+            }
+        }
+
+    </script>
+	
+	<!-- Filter Container -->
+    <div id="filterContainer">
+        <div id="sourceFilterOptionsContainers"></div>
+        <div id="tokenFilterOptionsContainers"></div>
+    </div>
+
+    <!-- More and Clear Filter Container -->
+    <div id="clearFilterButtonContainer">
+        <input class="button" type="button" onclick="addSourceFilterOptionsElements('All')" value="More Source">
+        <input id="" type="button" onclick="addAddressElementsByToken('All')" value="Clear Filter" style="background-color: dodgerblue;">
+        <input class="button" type="button" onclick="addTokenFilterOptionsElements('All')" value="More Tokens">
+    </div>
+
+    <hr>
+
+    <!-- loader -->
+    <div id="loaderContainer">
+        <h1>Loading Addresses</h1>
+        <div class="loader"></div>
+    </div>
+
+    <!-- UI Elements -->
+    <div id="addressesContainer">
+        <h1>Addresses</h1>
+    </div>
+
+    <!-- Snackbar -->
+    <div id="snackbar"></div>
+
+</body>
+</html>

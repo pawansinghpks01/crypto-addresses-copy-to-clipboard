@@ -1,0 +1,183 @@
+body{
+    background-color: #2B2B2B;
+    /* IE and Edge */
+    -ms-overflow-style: none;
+    /* Firefox */
+    scrollbar-width: none;
+}
+
+/* hide scrollbar but keep functionality */
+body::-webkit-scrollbar {
+    display: none;
+}
+
+h1{
+    color: dodgerblue;
+}
+input{
+    border:2px solid #aaa;
+    border-radius:4px;
+    margin:8px;
+    outline:none;
+    padding:8px;
+    box-sizing:border-box;
+    transition:.3s;
+    border-color:dodgerBlue;
+    box-shadow:0 0 8px 0 dodgerBlue;
+}
+hr {
+    border-style: none;
+    border-top-style: dotted;
+    border-width: 5px;
+    border-color: dodgerblue;
+    height: 0px;
+    width: 5%;
+    margin: 10px auto;
+}
+
+#loaderContainer{
+    margin: auto;
+    text-align: center;
+}
+
+#addressesContainer{
+    width: 90%;
+    margin: auto;
+    text-align: center;
+    visibility: hidden;
+}
+
+.addressRow{
+    margin: 20px;
+}
+.addressColumn{
+    display:inline-block;
+    vertical-align:top;
+    margin: 20px;
+}
+.address{
+    width: 390px;
+    color: #fff;
+    background-color: black;
+}
+.addressName, .addressSource{
+    width: 120px;
+    color: #fff;
+    background-color: black;
+}
+
+.button {
+    border:2px solid;
+    border-radius:4px;
+    width: 120px;
+    margin:8px;
+    outline:none;
+    padding:8px;
+    box-sizing:border-box;
+    transition:.3s;
+    border-color:dodgerBlue;
+    background-color: greenyellow;
+    box-shadow:0 0 8px 0 dodgerBlue;
+    font-weight: bold;
+    font-size: medium;
+  }
+  
+.button:hover {
+    background-color: dodgerblue;
+    border:2px solid black;
+}
+  
+.button:active {
+    background-color: darkgreen;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+}
+
+
+/* Loader */
+.loader {
+    margin: auto;
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 16px solid dodgerblue;
+    width: 120px;
+    height: 120px;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
+    z-index: 99;
+}
+
+@-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Snackbar */
+#snackbar {
+    visibility: hidden;
+    border:5px solid black;
+    border-radius:10px;
+    min-width: 400px;
+    background-color: white;
+    color: black;
+    text-align: center;
+    border-radius: 2px;
+    padding: 15px;
+    z-index: 2;
+    position: fixed;
+    left: 50%;
+    margin-left: -250px;
+    bottom: 30px;
+    font-size: 15px;
+    font-weight: bold;
+}
+  
+#snackbar.show {
+    visibility: visible;
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+  
+@-webkit-keyframes fadein {
+    from {bottom: 0; opacity: 0;} 
+    to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+    from {bottom: 30px; opacity: 1;} 
+    to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+}
+
+/* Filter Container */
+#filterContainer {
+    margin: auto;
+    width: 70%;
+    text-align: center;
+    display: grid;
+    grid-template-columns: .5fr .5fr;
+    grid-gap: 10px;
+}
+#clearFilterButtonContainer{
+    margin: auto;
+    text-align: center;
+    visibility: hidden;
+}
+#clearFilterButtonContainer > input{
+    font-size: medium;
+    font-weight: bold;
+}
