@@ -16,7 +16,8 @@ let allAddressRows = [
 	{"address":"'DQ3sGBm1Zarx4upBZMmez6YEEUm8uYvBx1'", "addressSource":"'Binance'", "addressName":"Digibyte", "token":"'DGB'"},
 	{"address":"'DGr8CtSzjpydN8USR7qhqwcaV2YMky5P9z'", "addressSource":"'Binance'", "addressName":"Dogecoin", "token":"'DOGE'"},
 	{"address":"'0x3086dbfe32509cb265cd1c59e92ab1af01d301fa'", "addressSource":"'Binance'", "addressName":"Chiliz", "token":"'CHZ'"},
-
+	{"address":"'RKsJB8p4Aqcx4hxvqxSQdjtU2L9faAeAYk'", "addressSource":"'Binance'", "addressName":"Ravencoin", "token":"'RVN'"},
+	
 	//WazirX Wallet Addresses
 	{"address":"'TQsyQoUHa8RyZsYLvFhEV2VadQF9ReLQVH'", "addressSource":"'WazirX'", "addressName":"Tron", "token":"'TRX'"},
 
